@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
-@ComponentScan({"io.khasang.ba"})
+@ComponentScan({"io.khasang.ba.controller", "io.khasang.ba.config"})
 @EnableWebMvc
 public class WebConfig extends WebMvcConfigurerAdapter {
 
