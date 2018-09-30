@@ -1,6 +1,7 @@
 package io.khasang.ba.controller;
 
 import io.khasang.ba.Message;
+import io.khasang.ba.service.CreateTable;
 import io.khasang.ba.service.MyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AppController {
     @Autowired
     private Message message;
+    @Autowired
+    private CreateTable createTable;
 
     @Qualifier("myServiceImpl")
     @Autowired
@@ -30,5 +33,11 @@ public class AppController {
     public String getName(@PathVariable("name") String name, Model model){
         model.addAttribute("name", name);
         return "hello";
+    }
+
+    @RequestMapping("/create")
+    public String createTable(Model model) {
+        model.addAttribute("status", createTable.getTableCreationStatus());
+        return "create";
     }
 }
