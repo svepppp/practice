@@ -11,7 +11,7 @@ public class CreateTable {
 
     public String getTableCreationStatus() {
         try {
-//            jdbcTemplate.execute("DROP TABLE IF EXISTS cats");
+            jdbcTemplate.execute("DROP TABLE IF EXISTS cats");
 
             jdbcTemplate.execute("CREATE TABLE public.cats\n" +
                     "(\n" +
