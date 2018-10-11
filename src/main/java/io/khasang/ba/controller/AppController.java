@@ -31,6 +31,11 @@ public class AppController {
         return "home";
     }
 
+    @RequestMapping("/catinfo")
+    public String getHelloPage(){
+        return "cat";
+    }
+
     // localhost:8080/name/asdasd
     @RequestMapping("/name/{name}")
     public String getName(@PathVariable("name") String name, Model model){
