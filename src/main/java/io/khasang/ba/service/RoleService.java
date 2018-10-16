@@ -23,7 +23,7 @@ public interface RoleService {
      * @param id Identifier of the desired role
      * @return Found {@link Role} instance
      */
-    Role getRole(long id);
+    Role getRoleById(long id);
 
     /**
      * Update existing role with new instance

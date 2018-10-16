@@ -1,14 +1,21 @@
 package io.khasang.ba.service.impl;
 
+import io.khasang.ba.dao.RoleDao;
 import io.khasang.ba.entity.Role;
 import io.khasang.ba.service.RoleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * Implementation of RoleService based on DAO-layer utilization
  */
+@Service
 public class RoleServiceImpl implements RoleService {
+
+    @Autowired
+    private RoleDao roleDao;
 
     /**
      * Add new role
@@ -18,7 +25,7 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public Role addRole(Role newRole) {
-        return null;
+        return roleDao.add(newRole);
     }
 
     /**
@@ -28,8 +35,8 @@ public class RoleServiceImpl implements RoleService {
      * @return Found {@link Role} instance
      */
     @Override
-    public Role getRole(long id) {
-        return null;
+    public Role getRoleById(long id) {
+        return roleDao.getById(id);
     }
 
     /**
@@ -40,7 +47,7 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public Role updateRole(Role updatedRole) {
-        return null;
+        return roleDao.update(updatedRole);
     }
 
     /**
@@ -50,7 +57,7 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public List<Role> getAllRoles() {
-        return null;
+        return roleDao.getAll();
     }
 
     /**
@@ -61,6 +68,6 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public Role deleteRole(long id) {
-        return null;
+        return roleDao.delete(getRoleById(id));
     }
 }
