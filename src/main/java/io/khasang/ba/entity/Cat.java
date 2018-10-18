@@ -13,17 +13,17 @@ public class Cat {
     private long id;
 
     private String name;
-//    @Column(columnDefinition = "DATE")
-//    private LocalDate year;
+    @Column(columnDefinition = "DATE")
+    private LocalDate year;
     private String description;
 
-//    public LocalDate getYear() {
-//        return year;
-//    }
-//
-//    public void setYear(LocalDate year) {
-//        this.year = year;
-//    }
+    public LocalDate getYear() {
+        return year;
+    }
+
+    public void setYear(LocalDate year) {
+        this.year = year;
+    }
 
     public long getId() {
         return id;
