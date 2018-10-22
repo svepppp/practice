@@ -82,6 +82,7 @@ public class RoleControllerIntegrationTest {
         );
         List<Role> allReceivedRoles = responseEntity.getBody();
 
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertNotNull(allReceivedRoles);
         assertFalse(allReceivedRoles.isEmpty());
 
