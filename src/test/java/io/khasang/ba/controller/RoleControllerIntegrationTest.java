@@ -2,13 +2,15 @@ package io.khasang.ba.controller;
 
 import io.khasang.ba.entity.Role;
 import org.junit.Test;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * Integration test for Role REST layer
@@ -17,10 +19,12 @@ public class RoleControllerIntegrationTest {
 
     private static final String TEST_ROLE_NAME_PREFIX = "TEST_ROLE_";
     private static final String TEST_ROLE_DESCRIPTION = "Test role";
+    private static final int TEST_ENTITIES_COUNT = 10;
 
     private static final String ROOT = "http://localhost:8080/role";
     private static final String ADD = "/add";
     private static final String GET_BY_ID = "/get/{id}";
+    private static final String GET_ALL = "/get/all";
 
     /**
      * Check role addition
@@ -56,6 +60,36 @@ public class RoleControllerIntegrationTest {
         Role duplicateRole = new Role();
         duplicateRole.setName(createdRole.getName());
         getRoleResponseEntityFromAdditionRequest(duplicateRole);
+    }
+
+    /**
+     * Checks sequential addition of N roles addition and extraction
+     */
+    @Test
+    public void checkGetAllRoles() {
+        List<Role> createdRoles = new ArrayList<>(TEST_ENTITIES_COUNT);
+        for (int i = 0; i < TEST_ENTITIES_COUNT; i++) {
+            createdRoles.add(getCreatedRole());
+        }
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<List<Role>> responseEntity = restTemplate.exchange(
+                ROOT + GET_ALL,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Role>>() {
+                }
+        );
+        List<Role> allReceivedRoles = responseEntity.getBody();
+
+        assertNotNull(allReceivedRoles);
+        assertFalse(allReceivedRoles.isEmpty());
+
+        List<Role> receivedRolesSubList =
+                allReceivedRoles.subList(allReceivedRoles.size() - TEST_ENTITIES_COUNT, allReceivedRoles.size());
+        for (int i = 0; i < TEST_ENTITIES_COUNT; i++) {
+            assertEquals(createdRoles.get(i).getId(), receivedRolesSubList.get(i).getId());
+        }
     }
 
     /**
@@ -95,7 +129,8 @@ public class RoleControllerIntegrationTest {
     }
 
     /**
-     * Create prefilled test role entity with unique {@link Role#name} for further persistence process
+     * Create prefilled test role entity with unique {@link Role#name} for further persistence process.
+     * {@link UUID} suffix is used to provide name uniqueness
      *
      * @return {@link Role} instance satisfying {@code UNIQUE} constraint
      */
