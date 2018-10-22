@@ -90,6 +90,8 @@ public class RoleControllerIntegrationTest {
                 allReceivedRoles.subList(allReceivedRoles.size() - TEST_ENTITIES_COUNT, allReceivedRoles.size());
         for (int i = 0; i < TEST_ENTITIES_COUNT; i++) {
             assertEquals(createdRoles.get(i).getId(), receivedRolesSubList.get(i).getId());
+            assertEquals(createdRoles.get(i).getName(), receivedRolesSubList.get(i).getName());
+            assertEquals(createdRoles.get(i).getDescription(), receivedRolesSubList.get(i).getDescription());
         }
     }
 
