@@ -1,20 +1,8 @@
 package io.khasang.ba.config;
 
-import io.khasang.ba.dao.CatDao;
-import io.khasang.ba.dao.OnlineQueueDao;
-import io.khasang.ba.dao.DocumentDao;
-import io.khasang.ba.dao.RoleDao;
-import io.khasang.ba.dao.UserDao;
-import io.khasang.ba.dao.impl.CatDaoImpl;
-import io.khasang.ba.dao.impl.OnlineQueueDaoImpl;
-import io.khasang.ba.dao.impl.DocumentDaoImpl;
-import io.khasang.ba.dao.impl.RoleDaoImpl;
-import io.khasang.ba.dao.impl.UserDaoImpl;
-import io.khasang.ba.entity.Cat;
-import io.khasang.ba.entity.OnlineQueue;
-import io.khasang.ba.entity.Document;
-import io.khasang.ba.entity.Role;
-import io.khasang.ba.entity.User;
+import io.khasang.ba.dao.*;
+import io.khasang.ba.dao.impl.*;
+import io.khasang.ba.entity.*;
 import io.khasang.ba.service.CreateTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -79,14 +67,19 @@ public class AppConfig {
     public OnlineQueueDao onlineQueueDao() {
         return new OnlineQueueDaoImpl(OnlineQueue.class);
     }
-      
+
     @Bean
     public UserDao userDao() {
         return new UserDaoImpl(User.class);
     }
-  
+
     @Bean
     public DocumentDao documentDao() {
         return new DocumentDaoImpl(Document.class);
+    }
+
+    @Bean
+    public TicketDao ticketDao() {
+        return new TicketDaoImpl(Ticket.class);
     }
 }
