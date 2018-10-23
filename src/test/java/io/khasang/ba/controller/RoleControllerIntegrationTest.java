@@ -16,7 +16,6 @@ import static org.junit.Assert.*;
  * Integration test for Role REST layer
  */
 public class RoleControllerIntegrationTest {
-
     private static final String TEST_ROLE_NAME_PREFIX = "TEST_ROLE_";
     private static final String TEST_ROLE_DESCRIPTION = "Test role";
     private static final int TEST_ENTITIES_COUNT = 30;
@@ -46,7 +45,6 @@ public class RoleControllerIntegrationTest {
     @Test(expected = org.springframework.web.client.HttpServerErrorException.class)
     public void checkRoleNameUniqueness() {
         Role createdRole = getCreatedRole();
-
         Role duplicateRole = new Role();
         duplicateRole.setName(createdRole.getName());
         getRoleResponseEntityFromAdditionRequest(duplicateRole);
@@ -192,7 +190,6 @@ public class RoleControllerIntegrationTest {
     private Role getCreatedRole() {
         Role role = new Role();
         fillRole(role);
-
         ResponseEntity<Role> responseEntity = getRoleResponseEntityFromAdditionRequest(role);
         Role createdRole = responseEntity.getBody();
 
