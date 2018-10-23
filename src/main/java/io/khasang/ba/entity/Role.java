@@ -1,7 +1,5 @@
 package io.khasang.ba.entity;
 
-import org.hibernate.annotations.NaturalId;
-
 import javax.persistence.*;
 
 /**
@@ -16,7 +14,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NaturalId
+    @Column(unique = true, nullable = false)
     private String name;
 
     private String description;

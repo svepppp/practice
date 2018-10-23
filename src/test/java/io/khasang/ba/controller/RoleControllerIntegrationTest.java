@@ -19,12 +19,13 @@ public class RoleControllerIntegrationTest {
 
     private static final String TEST_ROLE_NAME_PREFIX = "TEST_ROLE_";
     private static final String TEST_ROLE_DESCRIPTION = "Test role";
-    private static final int TEST_ENTITIES_COUNT = 10;
+    private static final int TEST_ENTITIES_COUNT = 30;
 
     private static final String ROOT = "http://localhost:8080/role";
     private static final String ADD = "/add";
     private static final String GET_BY_ID = "/get/{id}";
     private static final String GET_ALL = "/get/all";
+    private static final String UPDATE = "/update";
 
     /**
      * Check role addition
@@ -32,21 +33,8 @@ public class RoleControllerIntegrationTest {
     @Test
     public void checkAddRole() {
         Role createdRole = getCreatedRole();
-
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Role> responseEntity = restTemplate.exchange(
-                ROOT + GET_BY_ID,
-                HttpMethod.GET,
-                null,
-                Role.class,
-                createdRole.getId()
-        );
-        Role receivedRole = responseEntity.getBody();
-
-        assertNotNull(receivedRole);
-        assertEquals(createdRole.getId(), receivedRole.getId());
-        assertEquals(createdRole.getName(), receivedRole.getName());
-        assertEquals(createdRole.getDescription(), receivedRole.getDescription());
+        Role receivedRole = getRoleById(createdRole.getId());
+        checkRolesEquality(createdRole, receivedRole);
     }
 
     /**
@@ -63,7 +51,8 @@ public class RoleControllerIntegrationTest {
     }
 
     /**
-     * Checks sequential addition of N roles addition and extraction
+     * Checks sequential addition of certain amount of roles addition and getting. Amount is set in
+     * {@link #TEST_ENTITIES_COUNT} constant
      */
     @Test
     public void checkGetAllRoles() {
@@ -89,20 +78,88 @@ public class RoleControllerIntegrationTest {
         List<Role> receivedRolesSubList =
                 allReceivedRoles.subList(allReceivedRoles.size() - TEST_ENTITIES_COUNT, allReceivedRoles.size());
         for (int i = 0; i < TEST_ENTITIES_COUNT; i++) {
-            assertEquals(createdRoles.get(i).getId(), receivedRolesSubList.get(i).getId());
-            assertEquals(createdRoles.get(i).getName(), receivedRolesSubList.get(i).getName());
-            assertEquals(createdRoles.get(i).getDescription(), receivedRolesSubList.get(i).getDescription());
+            checkRolesEquality(createdRoles.get(i), receivedRolesSubList.get(i));
         }
     }
 
     /**
-     * Get test role entity from POST response during role creation procedure
+     * Check of role entity update via PUT request
+     */
+    @Test
+    public void checkUpdateRole() {
+        Role role = getCreatedRole();
+        fillRole(role);
+        putRoleToUpdate(role);
+        Role updatedRole = getRoleById(role.getId());
+        checkRolesEquality(role, updatedRole);
+    }
+
+    /**
+     * Method for role getting by id
+     *
+     * @param id Id in table of roles
+     * @return Found {@link Role} instance
+     */
+    private Role getRoleById(Long id) {
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Role> responseEntity = restTemplate.exchange(
+                ROOT + GET_BY_ID,
+                HttpMethod.GET,
+                null,
+                Role.class,
+                id
+        );
+        Role receivedRole = responseEntity.getBody();
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertNotNull(receivedRole);
+        return receivedRole;
+    }
+
+    /**
+     * Methods check field of the roles on equality condition
+     *
+     * @param role1 First role
+     * @param role2 Second role
+     */
+    private void checkRolesEquality(Role role1, Role role2) {
+        assertEquals(role1.getId(), role2.getId());
+        assertEquals(role1.getName(), role2.getName());
+        assertEquals(role1.getDescription(), role2.getDescription());
+    }
+
+    /**
+     * Put role for update
+     *
+     * @param role Role, which should be updated on service
+     */
+    private void putRoleToUpdate(Role role) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        HttpEntity<Role> httpEntity = new HttpEntity<>(role, httpHeaders);
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Role> responseEntity = restTemplate.exchange(
+                ROOT + UPDATE,
+                HttpMethod.PUT,
+                httpEntity,
+                Role.class
+        );
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody());
+    }
+
+    /**
+     * Get created test role entity from POST response during role creation procedure. Instead of creating {@link Role}
+     * instance by constructor, this method returns instance from response, thus created role contains table identifier
      *
      * @return Instance of {@link Role} with generated identifier
      */
     private Role getCreatedRole() {
-        Role filledRole = prefilledRole();
-        ResponseEntity<Role> responseEntity = getRoleResponseEntityFromAdditionRequest(filledRole);
+        Role role = new Role();
+        fillRole(role);
+
+        ResponseEntity<Role> responseEntity = getRoleResponseEntityFromAdditionRequest(role);
         Role createdRole = responseEntity.getBody();
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
@@ -132,13 +189,12 @@ public class RoleControllerIntegrationTest {
     }
 
     /**
-     * Create prefilled test role entity with unique {@link Role#name} for further persistence process.
+     * Fill test role entity with unique {@link Role#name} for further persistence process.
      * {@link UUID} suffix is used to provide name uniqueness
      *
      * @return {@link Role} instance satisfying {@code UNIQUE} constraint
      */
-    private Role prefilledRole() {
-        Role role = new Role();
+    private Role fillRole(Role role) {
         role.setName(TEST_ROLE_NAME_PREFIX + UUID.randomUUID().toString());
         role.setDescription(TEST_ROLE_DESCRIPTION);
         return role;
