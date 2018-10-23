@@ -26,6 +26,7 @@ public class RoleControllerIntegrationTest {
     private static final String GET_BY_ID = "/get/{id}";
     private static final String GET_ALL = "/get/all";
     private static final String UPDATE = "/update";
+    private static final String DELETE_BY_ID = "/delete/{id}";
 
     /**
      * Check role addition
@@ -34,6 +35,7 @@ public class RoleControllerIntegrationTest {
     public void checkAddRole() {
         Role createdRole = getCreatedRole();
         Role receivedRole = getRoleById(createdRole.getId());
+        assertNotNull(receivedRole);
         checkRolesEquality(createdRole, receivedRole);
     }
 
@@ -91,7 +93,40 @@ public class RoleControllerIntegrationTest {
         fillRole(role);
         putRoleToUpdate(role);
         Role updatedRole = getRoleById(role.getId());
+        assertNotNull(updatedRole);
         checkRolesEquality(role, updatedRole);
+    }
+
+    /**
+     * Check of role deletion
+     */
+    @Test
+    public void checkRoleDelete() {
+        Role role = getCreatedRole();
+        Role deletedRole = getDeletedRole(role.getId());
+        checkRolesEquality(role, deletedRole);
+        assertNull(getRoleById(role.getId()));
+    }
+
+    /**
+     * Utility method which deletes role by id and retrieves role entity from DELETE response body
+     *
+     * @param id Id of the role which should be deleted
+     * @return Deleted role
+     */
+    private Role getDeletedRole(Long id) {
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Role> responseEntity = restTemplate.exchange(
+                ROOT + DELETE_BY_ID,
+                HttpMethod.DELETE,
+                null,
+                Role.class,
+                id
+        );
+        Role deletedRole = responseEntity.getBody();
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertNotNull(deletedRole);
+        return deletedRole;
     }
 
     /**
@@ -111,7 +146,6 @@ public class RoleControllerIntegrationTest {
         );
         Role receivedRole = responseEntity.getBody();
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertNotNull(receivedRole);
         return receivedRole;
     }
 
@@ -191,12 +225,9 @@ public class RoleControllerIntegrationTest {
     /**
      * Fill test role entity with unique {@link Role#name} for further persistence process.
      * {@link UUID} suffix is used to provide name uniqueness
-     *
-     * @return {@link Role} instance satisfying {@code UNIQUE} constraint
      */
-    private Role fillRole(Role role) {
+    private void fillRole(Role role) {
         role.setName(TEST_ROLE_NAME_PREFIX + UUID.randomUUID().toString());
         role.setDescription(TEST_ROLE_DESCRIPTION);
-        return role;
     }
 }
