@@ -1,5 +1,8 @@
 package io.khasang.ba.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 import java.time.LocalTime;
 
@@ -18,13 +21,25 @@ public class Poi {
     private long id;
 
     private String name;
+
+    @ColumnDefault(value = "'безымянный'")
     private String category;
+
+    @Column(columnDefinition = "TIME")
+    @ColumnDefault(value = "'00:00:00'")
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime startWork;
+
+    @ColumnDefault(value = "0")
     private int workTime;
     private String address;
 
-    //Geographic coordinates
+    //Geographic coordinates latitude
+    @ColumnDefault(value = "0.000000")
     private double latitude;
+
+    //Geographic coordinates longitude
+    @ColumnDefault(value = "0.000000")
     private double longitude;
 
     public long getId() {
@@ -64,7 +79,7 @@ public class Poi {
     }
 
     public void setWorkTime(int workTime) {
-        this.workTime = workTime;
+        this.workTime = workTime >= 0 ? workTime : 0;
     }
 
     public String getAddress() {
