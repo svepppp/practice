@@ -82,4 +82,9 @@ public class AppConfig {
     public TicketDao ticketDao() {
         return new TicketDaoImpl(Ticket.class);
     }
+
+    @Bean
+    public PoiDao poiDao() {
+        return new PoiDaoImpl(Poi.class);
+    }
 }
