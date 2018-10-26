@@ -24,25 +24,25 @@ public class PoiController {
 
     @ResponseBody
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
-    public Poi getPoiById(@PathVariable(value = "id") long id){
+    public Poi getPoiById(@PathVariable(value = "id") long id) {
         return poiService.getPoiById(id);
     }
 
     @ResponseBody
     @RequestMapping(value = "/get/all", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
-    public List<Poi> getAllCats(){
+    public List<Poi> getAllCats() {
         return poiService.getAllPoi();
     }
 
     @ResponseBody
     @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = "application/json;charset=utf-8")
-    public Poi updatePoi(@RequestBody Poi poi){
+    public Poi updatePoi(@RequestBody Poi poi) {
         return poiService.updatePoi(poi);
     }
 
     @ResponseBody
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE, produces = "application/json;charset=utf-8")
-    public Poi deleteCat(@PathVariable(value = "id") long id){
+    public Poi deleteCat(@PathVariable(value = "id") long id) {
         return poiService.deletePoi(id);
     }
 }

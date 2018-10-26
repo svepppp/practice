@@ -7,7 +7,6 @@ import javax.persistence.*;
 import java.time.LocalTime;
 
 /**
- *
  * POI - Point of Interest. This is object include any params i.e. address, geographical coordinates,
  * include category etc.
  */
