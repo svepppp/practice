@@ -35,7 +35,7 @@ public class RoleControllerIntegrationTest {
         Role createdRole = getCreatedRole();
         Role receivedRole = getRoleById(createdRole.getId());
         assertNotNull(receivedRole);
-        checkRolesEquality(createdRole, receivedRole);
+        assertEquals(createdRole, receivedRole);
     }
 
     /**
@@ -78,7 +78,7 @@ public class RoleControllerIntegrationTest {
         List<Role> receivedRolesSubList =
                 allReceivedRoles.subList(allReceivedRoles.size() - TEST_ENTITIES_COUNT, allReceivedRoles.size());
         for (int i = 0; i < TEST_ENTITIES_COUNT; i++) {
-            checkRolesEquality(createdRoles.get(i), receivedRolesSubList.get(i));
+            assertEquals(createdRoles.get(i), receivedRolesSubList.get(i));
         }
     }
 
@@ -92,7 +92,7 @@ public class RoleControllerIntegrationTest {
         putRoleToUpdate(role);
         Role updatedRole = getRoleById(role.getId());
         assertNotNull(updatedRole);
-        checkRolesEquality(role, updatedRole);
+        assertEquals(role, updatedRole);
     }
 
     /**
@@ -102,7 +102,7 @@ public class RoleControllerIntegrationTest {
     public void checkRoleDelete() {
         Role role = getCreatedRole();
         Role deletedRole = getDeletedRole(role.getId());
-        checkRolesEquality(role, deletedRole);
+        assertEquals(role, deletedRole);
         assertNull(getRoleById(role.getId()));
     }
 
@@ -145,18 +145,6 @@ public class RoleControllerIntegrationTest {
         Role receivedRole = responseEntity.getBody();
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         return receivedRole;
-    }
-
-    /**
-     * Methods check field of the roles on equality condition
-     *
-     * @param role1 First role
-     * @param role2 Second role
-     */
-    private void checkRolesEquality(Role role1, Role role2) {
-        assertEquals(role1.getId(), role2.getId());
-        assertEquals(role1.getName(), role2.getName());
-        assertEquals(role1.getDescription(), role2.getDescription());
     }
 
     /**
