@@ -1,5 +1,7 @@
 package io.khasang.ba.entity;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.time.LocalDateTime;
@@ -18,6 +20,16 @@ public class DocumentItemMetadata {
 
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime timestamp;
+
+    public DocumentItemMetadata() {
+    }
+
+    public DocumentItemMetadata(MultipartFile multipartFile) {
+        fileName = multipartFile.getOriginalFilename();
+        size = multipartFile.getSize();
+        contentType = multipartFile.getContentType();
+        timestamp = LocalDateTime.now();
+    }
 
     public String getFileName() {
         return fileName;

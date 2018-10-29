@@ -1,5 +1,7 @@
 package io.khasang.ba.entity;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -14,6 +16,14 @@ public class DocumentItem {
     private String name;
 
     private DocumentItemMetadata metadata;
+
+    public DocumentItem() {
+    }
+
+    public DocumentItem(DocumentItem documentItem, MultipartFile multipartFile) {
+        name = documentItem.name;
+        metadata = new DocumentItemMetadata(multipartFile);
+    }
 
     public Long getId() {
         return id;

@@ -1,7 +1,12 @@
 package io.khasang.ba.service;
 
 import io.khasang.ba.entity.DocumentItem;
+import io.khasang.ba.entity.DocumentItemData;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -10,15 +15,16 @@ import java.util.List;
 public interface DocumentItemService {
 
     /**
-     * Add new documentItem
+     * Add new DocumentItem
      *
-     * @param newDocumentItem New instance of documentItem
+     * @param documentItem New instance of documentItem
+     * @param documentFile
      * @return Added {@link DocumentItem} instance
      */
-    DocumentItem addDocumentItem(DocumentItem newDocumentItem);
+    DocumentItem addDocumentItem(DocumentItem documentItem, MultipartFile documentFile) throws IOException;
 
     /**
-     * Get documentItem by id
+     * Get DocumentItem by id
      *
      * @param id Identifier of the desired documentItem
      * @return Found {@link DocumentItem} instance
@@ -26,7 +32,16 @@ public interface DocumentItemService {
     DocumentItem getDocumentItemById(long id);
 
     /**
-     * Update existing documentItem with new instance
+     * Get data file of DocumentItem, in fact data content of associated {@link DocumentItemData} entity. DocumentItem
+     * and DocumentItemData have OneToOne association
+     *
+     * @param id Identifier of {@link DocumentItem} , i.e. {@link DocumentItemData} identifier
+     * @return {@link ResponseEntity} typed with {@link Resource}, that is data file of DocumentItem
+     */
+    ResponseEntity<Resource> getDocumentItemDataById(long id);
+
+    /**
+     * Update existing DocumentItem with new instance
      *
      * @param updatedDocumentItem Updated documentItem instance
      * @return Updated {@link DocumentItem} instance
@@ -34,9 +49,9 @@ public interface DocumentItemService {
     DocumentItem updateDocumentItem(DocumentItem updatedDocumentItem);
 
     /**
-     * Get all documentItems
+     * Get all DocumentItems
      *
-     * @return {@link List} instance of all documentItems
+     * @return {@link List} instance of all DocumentItems
      */
     List<DocumentItem> getAllDocumentItems();
 

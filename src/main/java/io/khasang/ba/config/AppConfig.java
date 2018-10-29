@@ -2,12 +2,15 @@ package io.khasang.ba.config;
 
 import io.khasang.ba.dao.CatDao;
 import io.khasang.ba.dao.DocumentItemDao;
+import io.khasang.ba.dao.DocumentItemDataDao;
 import io.khasang.ba.dao.RoleDao;
 import io.khasang.ba.dao.impl.CatDaoImpl;
 import io.khasang.ba.dao.impl.DocumentItemDaoImpl;
+import io.khasang.ba.dao.impl.DocumentItemDataDaoImpl;
 import io.khasang.ba.dao.impl.RoleDaoImpl;
 import io.khasang.ba.entity.Cat;
 import io.khasang.ba.entity.DocumentItem;
+import io.khasang.ba.entity.DocumentItemData;
 import io.khasang.ba.entity.Role;
 import io.khasang.ba.service.CreateTable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,5 +75,10 @@ public class AppConfig {
     @Bean
     public DocumentItemDao documentItemDao() {
         return new DocumentItemDaoImpl(DocumentItem.class);
+    }
+
+    @Bean
+    public DocumentItemDataDao documentItemDataDao() {
+        return new DocumentItemDataDaoImpl(DocumentItemData.class);
     }
 }
