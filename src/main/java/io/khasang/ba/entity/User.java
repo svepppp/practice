@@ -14,7 +14,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
+    @Column(name = "user_id")
     private long id;
 
     private String name;
@@ -31,44 +31,44 @@ public class User {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public LocalTime getTime() {
-        return time;
-    }
-
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
+    public String getSurname() {
+        return surname;
+    }
+
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public LocalTime getTime() {
+        return time;
     }
 
     public void setTime(LocalTime time) {
