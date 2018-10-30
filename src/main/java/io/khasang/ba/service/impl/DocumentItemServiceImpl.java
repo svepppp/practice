@@ -73,12 +73,15 @@ public class DocumentItemServiceImpl implements DocumentItemService {
         DocumentItem documentItem = getDocumentItemById(id);
         if (documentItem != null) {
             DocumentItemMetadata metadata = getDocumentItemById(id).getMetadata();
-            ByteArrayResource resource = new ByteArrayResource(documentItemDataDao.getById(id).getData());
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.valueOf(metadata.getContentType()));
-            headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + metadata.getFileName() + '"');
-            headers.setContentLength(resource.contentLength());
-            responseEntity = new ResponseEntity<>(resource, headers, HttpStatus.OK);
+            DocumentItemData documentItemData = documentItemDataDao.getById(id);
+            if (metadata != null && documentItemData != null) {
+                ByteArrayResource resource = new ByteArrayResource(documentItemData.getData());
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.valueOf(metadata.getContentType()));
+                headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + metadata.getFileName() + '"');
+                headers.setContentLength(resource.contentLength());
+                responseEntity = new ResponseEntity<>(resource, headers, HttpStatus.OK);
+            }
         }
 
         return responseEntity;
