@@ -1,8 +1,7 @@
 package io.khasang.ba.entity;
 
-import org.hibernate.annotations.NaturalId;
-
 import javax.persistence.*;
+import java.util.Objects;
 
 /**
  * Role entity class. Provides spring security roles in "Business Assistant" project.
@@ -14,18 +13,18 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
-    @NaturalId
+    @Column(unique = true, nullable = false)
     private String name;
 
     private String description;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -43,5 +42,19 @@ public class Role {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role = (Role) o;
+        return Objects.equals(name, role.name) &&
+                Objects.equals(description, role.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, description);
     }
 }
