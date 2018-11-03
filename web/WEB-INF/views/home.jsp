@@ -5,5 +5,6 @@
 </head>
 <body>
 <p>Hello my ${name}</p>
+<img src="image/cat.jpg"/>
 </body>
 </html>
