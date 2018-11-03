@@ -1,44 +1,44 @@
 package io.khasang.ba.service.impl;
 
-import io.khasang.ba.dao.PoiDao;
-import io.khasang.ba.entity.Poi;
-import io.khasang.ba.service.PoiService;
+import io.khasang.ba.dao.PointOfInterestDao;
+import io.khasang.ba.entity.PointOfInterest;
+import io.khasang.ba.service.PointOfInterestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class PoiServiceImpl implements PoiService {
+public class PointOfInterestServiceImpl implements PointOfInterestService {
 
     @Autowired
-    private PoiDao poiDao;
+    private PointOfInterestDao pointOfInterestDao;
 
     @Override
-    public Poi addPoi(Poi poi) {
-        poiDao.add(poi);
-        return poi;
+    public PointOfInterest addPointOfInterest(PointOfInterest pointOfInterest) {
+        pointOfInterestDao.add(pointOfInterest);
+        return pointOfInterest;
     }
 
     @Override
-    public Poi getPoiById(long id) {
-        return poiDao.getById(id);
+    public PointOfInterest getPointOfInterestById(long id) {
+        return pointOfInterestDao.getById(id);
     }
 
     @Override
-    public List<Poi> getAllPoi() {
-        return poiDao.getAll();
+    public List<PointOfInterest> getAllPointOfInterest() {
+        return pointOfInterestDao.getAll();
     }
 
     @Override
-    public Poi updatePoi(Poi poi) {
-        return poiDao.update(poi);
+    public PointOfInterest updatePointOfInterest(PointOfInterest pointOfInterest) {
+        return pointOfInterestDao.update(pointOfInterest);
     }
 
     @Override
-    public Poi deletePoi(long id) {
-        Poi temp = poiDao.getById(id);
-        poiDao.delete(temp);
+    public PointOfInterest deletePointOfInterest(long id) {
+        PointOfInterest temp = pointOfInterestDao.getById(id);
+        pointOfInterestDao.delete(temp);
         return temp;
     }
 }

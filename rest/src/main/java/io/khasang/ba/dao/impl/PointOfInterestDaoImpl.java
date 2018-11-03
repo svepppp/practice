@@ -1,11 +1,10 @@
 package io.khasang.ba.dao.impl;
 
-import io.khasang.ba.dao.PoiDao;
-import io.khasang.ba.entity.Poi;
+import io.khasang.ba.dao.PointOfInterestDao;
+import io.khasang.ba.entity.PointOfInterest;
 
-
-public class PoiDaoImpl extends BasicDaoImpl<Poi> implements PoiDao {
-    public PoiDaoImpl(Class<Poi> entityClass) {
+public class PointOfInterestDaoImpl extends BasicDaoImpl<PointOfInterest> implements PointOfInterestDao {
+    public PointOfInterestDaoImpl(Class<PointOfInterest> entityClass) {
         super(entityClass);
     }
 }

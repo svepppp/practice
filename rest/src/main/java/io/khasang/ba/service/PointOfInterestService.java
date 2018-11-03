@@ -1,18 +1,18 @@
 package io.khasang.ba.service;
 
-import io.khasang.ba.entity.Poi;
+import io.khasang.ba.entity.PointOfInterest;
 
 import java.util.List;
 
-public interface PoiService {
+public interface PointOfInterestService {
 
     /**
      * method for add POI
      *
-     * @param poi = POI for adding
+     * @param pointOfInterest = POI for adding
      * @return created POI
      */
-    Poi addPoi(Poi poi);
+    PointOfInterest addPointOfInterest(PointOfInterest pointOfInterest);
 
     /**
      * method for getting POI by specific id
@@ -20,22 +20,22 @@ public interface PoiService {
      * @param id - POI's id
      * @return POI by id
      */
-    Poi getPoiById(long id);
+    PointOfInterest getPointOfInterestById(long id);
 
     /**
      * method gor getting all POIs
      *
      * @return all POIs
      */
-    List<Poi> getAllPoi();
+    List<PointOfInterest> getAllPointOfInterest();
 
     /**
      * method for update POI
      *
-     * @param poi - POI's with updated params
+     * @param pointOfInterest - POI's with updated params
      * @return updated cat
      */
-    Poi updatePoi(Poi poi);
+    PointOfInterest updatePointOfInterest(PointOfInterest pointOfInterest);
 
     /**
      * method for delete POI by id
@@ -43,5 +43,5 @@ public interface PoiService {
      * @param id - POI's id for delete
      * @return deleted POI
      */
-    Poi deletePoi(long id);
+    PointOfInterest deletePointOfInterest(long id);
 }
