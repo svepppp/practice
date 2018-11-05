@@ -88,4 +88,9 @@ public class AppConfig {
         return new EmployeeDaoImpl(Employee.class);
     }
 
+    @Bean
+    public FeedbackDao feedbackDao() {
+        return new FeedbackDaoImpl(Feedback.class);
+    }
+
 }
