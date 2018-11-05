@@ -1,34 +1,29 @@
 package io.khasang.ba.controller;
 
 import io.khasang.ba.entity.DocumentItem;
+import io.khasang.ba.entity.DocumentItemType;
 import org.junit.Test;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
+/**
+ * Integration test for DocumentItem REST layer
+ */
 public class DocumentItemControllerIntegrationTest {
-    private static final String TEST_DOCUMENT_ITEM_NAME_PREFIX = "TEST_DOCUMENT_ITEM_";
-    private static final String SAMPLES_ROOT = "/test_samples/";
-    private static final String DOWNLOAD_ROOT = "/download/";
-    private static final String FIRST_TEST_FILE_NAME = "test.jpg";
-    private static final String SECOND_TEST_FILE_NAME = "test.pdf";
-    private static final int TEST_ENTITIES_COUNT = 5;
+    private static final String FIRST_DOCUMENT_ITEM_NAME = "Test_item";
+    private static final String SECOND_DOCUMENT_ITEM_NAME = "SECOND_item";
+    private static final String UPDATED_DOCUMENT_ITEM_NAME = "UPDATED_DOCUMENT_ITEM_NAME";
+    private static final int TEST_ENTITIES_COUNT = 30;
 
     private static final String ROOT = "http://localhost:8080/document_item";
     private static final String ADD = "/add";
     private static final String GET_BY_ID = "/get/{id}";
-    private static final String GET_DATA_BY_ID = "/get/data/{id}";
     private static final String GET_ALL = "/get/all";
     private static final String UPDATE = "/update";
     private static final String DELETE_BY_ID = "/delete/{id}";
@@ -37,90 +32,103 @@ public class DocumentItemControllerIntegrationTest {
      * Check documentItem addition
      */
     @Test
-    public void checkUploadDocumentItem() throws IOException {
-        DocumentItem uploadedDocumentItem = getUploadedDocumentItem(FIRST_TEST_FILE_NAME);
-        DocumentItem receivedDocumentItem = getDocumentItemById(uploadedDocumentItem.getId());
+    public void checkAddDocumentItem() {
+        DocumentItem documentItemElectronic = getCreatedDocumentItem(FIRST_DOCUMENT_ITEM_NAME, DocumentItemType.ELECTRONIC_DOCUMENT);
+        DocumentItem receivedDocumentItem = getDocumentItemById(documentItemElectronic.getId());
         assertNotNull(receivedDocumentItem);
-        assertEquals(uploadedDocumentItem, receivedDocumentItem);
-        checkFileDownload(receivedDocumentItem);
+        assertEquals(documentItemElectronic, receivedDocumentItem);
+
+        DocumentItem documentItemRaw = getCreatedDocumentItem(SECOND_DOCUMENT_ITEM_NAME, DocumentItemType.RAW_DATA);
+        receivedDocumentItem = getDocumentItemById(documentItemRaw.getId());
+        assertNotNull(receivedDocumentItem);
+        assertEquals(documentItemRaw, receivedDocumentItem);
     }
 
-//    /**
-//     * Checks sequential addition of certain amount of documentItems addition and getting. Amount is set in
-//     * {@link #TEST_ENTITIES_COUNT} constant
-//     */
-//    @Test
-//    public void checkGetAllDocumentItems() {
-//        List<DocumentItem> createdDocumentItems = new ArrayList<>(TEST_ENTITIES_COUNT);
-//        for (int i = 0; i < TEST_ENTITIES_COUNT; i++) {
-//            createdDocumentItems.add(getUploadedDocumentItem());
-//        }
-//
-//        RestTemplate restTemplate = new RestTemplate();
-//        ResponseEntity<List<DocumentItem>> responseEntity = restTemplate.exchange(
-//                ROOT + GET_ALL,
-//                HttpMethod.GET,
-//                null,
-//                new ParameterizedTypeReference<List<DocumentItem>>() {
-//                }
-//        );
-//        List<DocumentItem> allReceivedDocumentItems = responseEntity.getBody();
-//
-//        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-//        assertNotNull(allReceivedDocumentItems);
-//        assertFalse(allReceivedDocumentItems.isEmpty());
-//
-//        List<DocumentItem> receivedDocumentItemsSubList =
-//                allReceivedDocumentItems.subList(allReceivedDocumentItems.size() - TEST_ENTITIES_COUNT, allReceivedDocumentItems.size());
-//        for (int i = 0; i < TEST_ENTITIES_COUNT; i++) {
-//            assertEquals(createdDocumentItems.get(i), receivedDocumentItemsSubList.get(i));
-//        }
-//    }
+    /**
+     * Checks sequential addition of certain amount of documentItems addition and getting. Amount is set in
+     * {@link #TEST_ENTITIES_COUNT} constant
+     */
+    @Test
+    public void checkGetAllDocumentItems() {
+        List<DocumentItem> createdDocumentItems = new ArrayList<>(TEST_ENTITIES_COUNT);
+        for (int i = 0; i < TEST_ENTITIES_COUNT; i++) {
+            createdDocumentItems
+                    .add(getCreatedDocumentItem(
+                            (i % 2 == 0) ? FIRST_DOCUMENT_ITEM_NAME : SECOND_DOCUMENT_ITEM_NAME,
+                            (i % 2 == 0) ? DocumentItemType.ELECTRONIC_DOCUMENT : DocumentItemType.RAW_DATA));
+        }
 
-//    /**
-//     * Check of documentItem entity update via PUT request
-//     */
-//    @Test
-//    public void checkUpdateDocumentItem() {
-//        DocumentItem documentItem = getUploadedDocumentItem();
-//        fillDocumentItem(documentItem);
-//        putDocumentItemToUpdate(documentItem);
-//        DocumentItem updatedDocumentItem = getDocumentItemById(documentItem.getId());
-//        assertNotNull(updatedDocumentItem);
-//        assertEquals(documentItem, updatedDocumentItem);
-//    }
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<List<DocumentItem>> responseEntity = restTemplate.exchange(
+                ROOT + GET_ALL,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<DocumentItem>>() {
+                }
+        );
+        List<DocumentItem> allReceivedDocumentItems = responseEntity.getBody();
 
-//    /**
-//     * Check of documentItem deletion
-//     */
-//    @Test
-//    public void checkDocumentItemDelete() {
-//        DocumentItem documentItem = getUploadedDocumentItem();
-//        DocumentItem deletedDocumentItem = getDeletedDocumentItem(documentItem.getId());
-//        assertEquals(documentItem, deletedDocumentItem);
-//        assertNull(getDocumentItemById(documentItem.getId()));
-//    }
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertNotNull(allReceivedDocumentItems);
+        assertFalse(allReceivedDocumentItems.isEmpty());
 
-//    /**
-//     * Utility method which deletes documentItem by id and retrieves documentItem entity from DELETE response body
-//     *
-//     * @param id Id of the documentItem which should be deleted
-//     * @return Deleted documentItem
-//     */
-//    private DocumentItem getDeletedDocumentItem(Long id) {
-//        RestTemplate restTemplate = new RestTemplate();
-//        ResponseEntity<DocumentItem> responseEntity = restTemplate.exchange(
-//                ROOT + DELETE_BY_ID,
-//                HttpMethod.DELETE,
-//                null,
-//                DocumentItem.class,
-//                id
-//        );
-//        DocumentItem deletedDocumentItem = responseEntity.getBody();
-//        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-//        assertNotNull(deletedDocumentItem);
-//        return deletedDocumentItem;
-//    }
+        List<DocumentItem> receivedDocumentItemsSubList =
+                allReceivedDocumentItems.subList(allReceivedDocumentItems.size() - TEST_ENTITIES_COUNT,
+                        allReceivedDocumentItems.size());
+        for (int i = 0; i < TEST_ENTITIES_COUNT; i++) {
+            assertEquals(createdDocumentItems.get(i), receivedDocumentItemsSubList.get(i));
+        }
+    }
+
+    /**
+     * Check of documentItem entity update via PUT request
+     */
+    @Test
+    public void checkUpdateDocumentItem() {
+        DocumentItem documentItem =
+                getCreatedDocumentItem(FIRST_DOCUMENT_ITEM_NAME, DocumentItemType.ELECTRONIC_DOCUMENT);
+
+        documentItem.setName(UPDATED_DOCUMENT_ITEM_NAME);
+        documentItem.setDocumentItemType(DocumentItemType.RAW_DATA);
+
+        putDocumentItemToUpdate(documentItem);
+        DocumentItem updatedDocumentItem = getDocumentItemById(documentItem.getId());
+        assertNotNull(updatedDocumentItem);
+        assertEquals(documentItem, updatedDocumentItem);
+    }
+
+    /**
+     * Check of documentItem deletion
+     */
+    @Test
+    public void checkDocumentItemDelete() {
+        DocumentItem documentItem = getCreatedDocumentItem(FIRST_DOCUMENT_ITEM_NAME,
+                DocumentItemType.ELECTRONIC_DOCUMENT);
+        DocumentItem deletedDocumentItem = getDeletedDocumentItem(documentItem.getId());
+        assertEquals(documentItem, deletedDocumentItem);
+        assertNull(getDocumentItemById(documentItem.getId()));
+    }
+
+    /**
+     * Utility method which deletes documentItem by id and retrieves documentItem entity from DELETE response body
+     *
+     * @param id Id of the documentItem which should be deleted
+     * @return Deleted documentItem
+     */
+    private DocumentItem getDeletedDocumentItem(Long id) {
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<DocumentItem> responseEntity = restTemplate.exchange(
+                ROOT + DELETE_BY_ID,
+                HttpMethod.DELETE,
+                null,
+                DocumentItem.class,
+                id
+        );
+        DocumentItem deletedDocumentItem = responseEntity.getBody();
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertNotNull(deletedDocumentItem);
+        return deletedDocumentItem;
+    }
 
     /**
      * Method for documentItem getting by id
@@ -142,41 +150,42 @@ public class DocumentItemControllerIntegrationTest {
         return receivedDocumentItem;
     }
 
-//    /**
-//     * Put documentItem for update
-//     *
-//     * @param documentItem DocumentItem, which should be updated on service
-//     */
-//    private void putDocumentItemToUpdate(DocumentItem documentItem) {
-//        HttpHeaders httpHeaders = new HttpHeaders();
-//        httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
-//        HttpEntity<DocumentItem> httpEntity = new HttpEntity<>(documentItem, httpHeaders);
-//
-//        RestTemplate restTemplate = new RestTemplate();
-//        ResponseEntity<DocumentItem> responseEntity = restTemplate.exchange(
-//                ROOT + UPDATE,
-//                HttpMethod.PUT,
-//                httpEntity,
-//                DocumentItem.class
-//        );
-//
-//        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-//        assertNotNull(responseEntity.getBody());
-//    }
+    /**
+     * Put documentItem for update
+     *
+     * @param documentItem DocumentItem, which should be updated on service
+     */
+    private void putDocumentItemToUpdate(DocumentItem documentItem) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        HttpEntity<DocumentItem> httpEntity = new HttpEntity<>(documentItem, httpHeaders);
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<DocumentItem> responseEntity = restTemplate.exchange(
+                ROOT + UPDATE,
+                HttpMethod.PUT,
+                httpEntity,
+                DocumentItem.class
+        );
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody());
+    }
 
     /**
-     * Get created test documentItem entity from POST response during documentItem creation procedure. Instead of creating {@link DocumentItem}
-     * instance by constructor, this method returns instance from response, thus created documentItem contains table identifier
+     * Get created test documentItem entity from POST response during DocumentItem creation procedure.
+     * Instead of creating {@link DocumentItem} instance by constructor, this method returns instance
+     * from response, thus created documentItem contains table identifier
      *
+     * @param documentItemName Name of DocumentItem which should be created
+     * @param documentItemType {@link DocumentItemType} of the created DocumentItem
      * @return Instance of {@link DocumentItem} with generated identifier
      */
-    private DocumentItem getUploadedDocumentItem(String testFileName) {
+    private DocumentItem getCreatedDocumentItem(String documentItemName, DocumentItemType documentItemType) {
         DocumentItem documentItem = new DocumentItem();
-        documentItem.setName(TEST_DOCUMENT_ITEM_NAME_PREFIX + LocalDateTime.now().toString());
-        Resource testResource = getTestResource(testFileName);
-
-        ResponseEntity<DocumentItem> responseEntity
-                = getResponseEntityFromPostRequest(documentItem, testResource);
+        documentItem.setName(documentItemName);
+        documentItem.setDocumentItemType(documentItemType);
+        ResponseEntity<DocumentItem> responseEntity = getDocumentItemResponseEntityFromAdditionRequest(documentItem);
         DocumentItem createdDocumentItem = responseEntity.getBody();
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
@@ -185,26 +194,16 @@ public class DocumentItemControllerIntegrationTest {
         return createdDocumentItem;
     }
 
-    private Resource getTestResource(String testFileName) {
-        ClassPathResource resource = new ClassPathResource(SAMPLES_ROOT + testFileName);
-        assertTrue(resource.exists());
-        return resource;
-    }
-
     /**
      * Add documentItem entity via POST request
      *
      * @param documentItem {@link DocumentItem} instance, which should be added via POST request
      * @return {@link ResponseEntity} containing response data
      */
-    private ResponseEntity<DocumentItem> getResponseEntityFromPostRequest(DocumentItem documentItem,
-                                                                          Resource fileResource) {
+    private ResponseEntity<DocumentItem> getDocumentItemResponseEntityFromAdditionRequest(DocumentItem documentItem) {
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("document_item", documentItem);
-        body.add("file", fileResource);
-        HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(body, httpHeaders);
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        HttpEntity<DocumentItem> httpEntity = new HttpEntity<>(documentItem, httpHeaders);
 
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.exchange(
@@ -213,24 +212,5 @@ public class DocumentItemControllerIntegrationTest {
                 httpEntity,
                 DocumentItem.class
         );
-    }
-
-    private void checkFileDownload(DocumentItem receivedDocumentItem) throws IOException {
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<byte[]> responseEntity = restTemplate.exchange(
-                ROOT + GET_DATA_BY_ID,
-                HttpMethod.GET,
-                null,
-                byte[].class,
-                receivedDocumentItem.getId()
-        );
-
-        assertEquals(MediaType.valueOf(receivedDocumentItem.getMetadata().getContentType()),
-                responseEntity.getHeaders().getContentType());
-        assertEquals(receivedDocumentItem.getMetadata().getSize(),
-                responseEntity.getHeaders().getContentLength());
-        assertNotNull(responseEntity.getBody());
-        Path path = Paths.get(new ClassPathResource(SAMPLES_ROOT + FIRST_TEST_FILE_NAME).getFile().getAbsolutePath());
-        assertArrayEquals(Files.readAllBytes(path), responseEntity.getBody());
     }
 }

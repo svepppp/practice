@@ -1,7 +1,5 @@
 package io.khasang.ba.entity;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -15,15 +13,9 @@ public class DocumentItem {
 
     private String name;
 
-    private DocumentItemMetadata metadata;
-
-    public DocumentItem() {
-    }
-
-    public DocumentItem(DocumentItem documentItem, MultipartFile multipartFile) {
-        name = documentItem.name;
-        metadata = new DocumentItemMetadata(multipartFile);
-    }
+    @Enumerated
+    @Column(name = "type")
+    private DocumentItemType documentItemType;
 
     public Long getId() {
         return id;
@@ -41,12 +33,12 @@ public class DocumentItem {
         this.name = name;
     }
 
-    public DocumentItemMetadata getMetadata() {
-        return metadata;
+    public DocumentItemType getDocumentItemType() {
+        return documentItemType;
     }
 
-    public void setMetadata(DocumentItemMetadata metadata) {
-        this.metadata = metadata;
+    public void setDocumentItemType(DocumentItemType documentItemType) {
+        this.documentItemType = documentItemType;
     }
 
     @Override
@@ -55,11 +47,11 @@ public class DocumentItem {
         if (o == null || getClass() != o.getClass()) return false;
         DocumentItem that = (DocumentItem) o;
         return Objects.equals(name, that.name) &&
-                Objects.equals(metadata, that.metadata);
+                documentItemType == that.documentItemType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, metadata);
+        return Objects.hash(name, documentItemType);
     }
 }

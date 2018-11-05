@@ -92,9 +92,4 @@ public class AppConfig {
     public EmployeeDao employeeDao() {
         return new EmployeeDaoImpl(Employee.class);
     }
-
-    @Bean
-    public DocumentItemDataDao documentItemDataDao() {
-        return new DocumentItemDataDaoImpl(DocumentItemData.class);
-    }
 }
