@@ -88,4 +88,8 @@ public class AppConfig {
         return new EmployeeDaoImpl(Employee.class);
     }
 
+    @Bean
+    public NewsDao newsDao() {
+        return new NewsDaoImpl(News.class);
+    }
 }
