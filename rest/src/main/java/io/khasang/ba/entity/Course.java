@@ -19,8 +19,9 @@ public class Course {
 
     private String description;
 
-    @Column(name = "creation_time", columnDefinition = "TIMESTAMP")
-    private LocalDateTime creationDate;
+    @Column(name = "edition_time", columnDefinition = "TIMESTAMP")
+    private LocalDateTime editionDateTime;
+
 
     public Long getId() {
         return id;
@@ -46,12 +47,12 @@ public class Course {
         this.description = description;
     }
 
-    public LocalDateTime getCreationDate() {
-        return creationDate;
+    public LocalDateTime getEditionDateTime() {
+        return editionDateTime;
     }
 
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
+    public void setEditionDateTime(LocalDateTime editionDateTime) {
+        this.editionDateTime = editionDateTime;
     }
 
     @Override
@@ -61,11 +62,11 @@ public class Course {
         Course course = (Course) o;
         return Objects.equals(name, course.name) &&
                 Objects.equals(description, course.description) &&
-                Objects.equals(creationDate, course.creationDate);
+                Objects.equals(editionDateTime, course.editionDateTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, creationDate);
+        return Objects.hash(name, description, editionDateTime);
     }
 }

@@ -88,4 +88,8 @@ public class AppConfig {
         return new EmployeeDaoImpl(Employee.class);
     }
 
+    @Bean
+    public CourseDao courseDao() {
+        return new CourseDaoImpl(Course.class);
+    }
 }
