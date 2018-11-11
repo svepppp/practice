@@ -7,41 +7,41 @@ import java.util.List;
 public interface PointOfInterestService {
 
     /**
-     * method for add POI
+     * method for add PointOfInterest
      *
-     * @param pointOfInterest = POI for adding
-     * @return created POI
+     * @param pointOfInterest = PointOfInterest for adding
+     * @return created PointOfInterest
      */
     PointOfInterest addPointOfInterest(PointOfInterest pointOfInterest);
 
     /**
-     * method for getting POI by specific id
+     * method for getting PointOfInterest by specific id
      *
-     * @param id - POI's id
-     * @return POI by id
+     * @param id - PointOfInterest's id
+     * @return PointOfInterest by id
      */
     PointOfInterest getPointOfInterestById(long id);
 
     /**
-     * method gor getting all POIs
+     * method gor getting all PointOfInterests
      *
-     * @return all POIs
+     * @return all PointOfInterests
      */
     List<PointOfInterest> getAllPointOfInterest();
 
     /**
-     * method for update POI
+     * method for update PointOfInterest
      *
-     * @param pointOfInterest - POI's with updated params
-     * @return updated cat
+     * @param pointOfInterest - PointOfInterest's with updated params
+     * @return updated pointOfInterest
      */
     PointOfInterest updatePointOfInterest(PointOfInterest pointOfInterest);
 
     /**
-     * method for delete POI by id
+     * method for delete PointOfInterest by id
      *
-     * @param id - POI's id for delete
-     * @return deleted POI
+     * @param id - PointOfInterest's id for delete
+     * @return deleted PointOfInterest
      */
     PointOfInterest deletePointOfInterest(long id);
 }

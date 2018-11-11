@@ -7,11 +7,13 @@ import javax.persistence.*;
 import java.time.LocalTime;
 
 /**
+ *
  * POI - Point of Interest. This is object include any params i.e. address, geographical coordinates,
  * include category etc.
  */
+
 @Entity
-@Table(name = "poi")
+@Table(name = "pointofinterests")
 public class PointOfInterest {
 
     @Id
@@ -20,7 +22,7 @@ public class PointOfInterest {
 
     private String name;
 
-    @ColumnDefault(value = "'безымянный'")
+    @ColumnDefault(value = "'unknown'")
     private String category;
 
     @Column(columnDefinition = "TIME")

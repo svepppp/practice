@@ -16,8 +16,7 @@ public class PointOfInterestServiceImpl implements PointOfInterestService {
 
     @Override
     public PointOfInterest addPointOfInterest(PointOfInterest pointOfInterest) {
-        pointOfInterestDao.add(pointOfInterest);
-        return pointOfInterest;
+        return pointOfInterestDao.add(pointOfInterest);
     }
 
     @Override
@@ -37,8 +36,6 @@ public class PointOfInterestServiceImpl implements PointOfInterestService {
 
     @Override
     public PointOfInterest deletePointOfInterest(long id) {
-        PointOfInterest temp = pointOfInterestDao.getById(id);
-        pointOfInterestDao.delete(temp);
-        return temp;
+        return pointOfInterestDao.delete(pointOfInterestDao.getById(id));
     }
 }
