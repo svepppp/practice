@@ -13,8 +13,8 @@ import java.time.LocalTime;
  */
 
 @Entity
-@Table(name = "poi")
-public class Poi {
+@Table(name = "pointofinterests")
+public class PointOfInterest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,7 +22,7 @@ public class Poi {
 
     private String name;
 
-    @ColumnDefault(value = "'безымянный'")
+    @ColumnDefault(value = "'unknown'")
     private String category;
 
     @Column(columnDefinition = "TIME")

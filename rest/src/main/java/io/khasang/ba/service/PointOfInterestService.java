@@ -1,47 +1,47 @@
 package io.khasang.ba.service;
 
-import io.khasang.ba.entity.Poi;
+import io.khasang.ba.entity.PointOfInterest;
 
 import java.util.List;
 
-public interface PoiService {
+public interface PointOfInterestService {
 
     /**
-     * method for add POI
+     * method for add PointOfInterest
      *
-     * @param poi = POI for adding
-     * @return created POI
+     * @param pointOfInterest = PointOfInterest for adding
+     * @return created PointOfInterest
      */
-    Poi addPoi(Poi poi);
+    PointOfInterest addPointOfInterest(PointOfInterest pointOfInterest);
 
     /**
-     * method for getting POI by specific id
+     * method for getting PointOfInterest by specific id
      *
-     * @param id - POI's id
-     * @return POI by id
+     * @param id - PointOfInterest's id
+     * @return PointOfInterest by id
      */
-    Poi getPoiById(long id);
+    PointOfInterest getPointOfInterestById(long id);
 
     /**
-     * method gor getting all POIs
+     * method gor getting all PointOfInterests
      *
-     * @return all POIs
+     * @return all PointOfInterests
      */
-    List<Poi> getAllPoi();
+    List<PointOfInterest> getAllPointOfInterest();
 
     /**
-     * method for update POI
+     * method for update PointOfInterest
      *
-     * @param poi - POI's with updated params
-     * @return updated cat
+     * @param pointOfInterest - PointOfInterest's with updated params
+     * @return updated pointOfInterest
      */
-    Poi updatePoi(Poi poi);
+    PointOfInterest updatePointOfInterest(PointOfInterest pointOfInterest);
 
     /**
-     * method for delete POI by id
+     * method for delete PointOfInterest by id
      *
-     * @param id - POI's id for delete
-     * @return deleted POI
+     * @param id - PointOfInterest's id for delete
+     * @return deleted PointOfInterest
      */
-    Poi deletePoi(long id);
+    PointOfInterest deletePointOfInterest(long id);
 }

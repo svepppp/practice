@@ -1,6 +1,6 @@
 package io.khasang.ba.dao;
 
-import io.khasang.ba.entity.Poi;
+import io.khasang.ba.entity.PointOfInterest;
 
-public interface PoiDao extends BasicDao<Poi> {
+public interface PointOfInterestDao extends BasicDao<PointOfInterest> {
 }
