@@ -64,6 +64,11 @@ public class AppConfig {
     }
 
     @Bean
+    public DocumentItemDao documentItemDao() {
+        return new DocumentItemDaoImpl(DocumentItem.class);
+    }
+
+    @Bean
     public OnlineQueueDao onlineQueueDao() {
         return new OnlineQueueDaoImpl(OnlineQueue.class);
     }
