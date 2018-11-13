@@ -94,11 +94,19 @@ public class AppConfig {
     }
 
     @Bean
-    public HistoryDao historyDao() {
+
+    public NewsDao newsDao() {
+        return new NewsDaoImpl(News.class);
+    }
+  
+    @Bean
+      public HistoryDao historyDao() {
         return new HistoryDaoImpl(History.class);
     }
+  
     @Bean
     public CourseDao courseDao() {
         return new CourseDaoImpl(Course.class);
     }
 }
+
