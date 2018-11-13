@@ -92,4 +92,9 @@ public class AppConfig {
     public EmployeeDao employeeDao() {
         return new EmployeeDaoImpl(Employee.class);
     }
+
+    @Bean
+    public HistoryDao historyDao() {
+        return new HistoryDaoImpl(History.class);
+    }
 }
