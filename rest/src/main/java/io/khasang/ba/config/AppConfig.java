@@ -97,4 +97,8 @@ public class AppConfig {
     public HistoryDao historyDao() {
         return new HistoryDaoImpl(History.class);
     }
+    @Bean
+    public CourseDao courseDao() {
+        return new CourseDaoImpl(Course.class);
+    }
 }
