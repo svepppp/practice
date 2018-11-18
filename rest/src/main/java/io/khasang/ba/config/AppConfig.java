@@ -89,7 +89,7 @@ public class AppConfig {
     }
 
     @Bean
-    public PointOfInterestDao poiDao() {
+    public PointOfInterestDao pointOfInterestDao() {
         return new PointOfInterestDaoImpl(PointOfInterest.class);
     }
 

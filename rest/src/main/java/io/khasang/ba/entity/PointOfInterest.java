@@ -20,7 +20,7 @@ public class PointOfInterest {
 
     private String name;
 
-    @ColumnDefault(value = "'безымянный'")
+    @ColumnDefault(value = "'unknown'")
     private String category;
 
     @Column(columnDefinition = "TIME")
