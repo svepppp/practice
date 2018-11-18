@@ -7,14 +7,12 @@ import javax.persistence.*;
 import java.time.LocalTime;
 
 /**
- *
  * POI - Point of Interest. This is object include any params i.e. address, geographical coordinates,
  * include category etc.
  */
-
 @Entity
-@Table(name = "poi")
-public class Poi {
+@Table(name = "pointsOfInterest")
+public class PointOfInterest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
