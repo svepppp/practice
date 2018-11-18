@@ -4,6 +4,8 @@ import io.khasang.ba.Message;
 import io.khasang.ba.service.CreateTable;
 import io.khasang.ba.service.MyService;
 import io.khasang.ba.util.CheckText;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.annotation.Secured;
@@ -14,6 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Controller
 public class AppController {
@@ -28,9 +33,13 @@ public class AppController {
     @Autowired
     private MyService myService;
 
+    private static final Logger log = LoggerFactory.getLogger(AppController.class);
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+
     // localhost:8080/
     @RequestMapping("/")
     public String getHelloPage(Model model){
+        log.info("Current time {}", dateFormat.format(new Date()));
         model.addAttribute("name", myService.getName());
         return "home";
     }
