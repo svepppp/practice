@@ -89,6 +89,11 @@ public class AppConfig {
     }
 
     @Bean
+    public PointOfInterestDao pointOfInterestDao() {
+        return new PointOfInterestDaoImpl(PointOfInterest.class);
+    }
+
+    @Bean
     public EmployeeDao employeeDao() {
         return new EmployeeDaoImpl(Employee.class);
     }
@@ -98,15 +103,14 @@ public class AppConfig {
     public NewsDao newsDao() {
         return new NewsDaoImpl(News.class);
     }
-  
+
     @Bean
       public HistoryDao historyDao() {
         return new HistoryDaoImpl(History.class);
     }
-  
+
     @Bean
     public CourseDao courseDao() {
         return new CourseDaoImpl(Course.class);
     }
 }
-
