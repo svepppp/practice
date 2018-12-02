@@ -17,8 +17,7 @@ public class FeedbackController {
     @RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     @ResponseBody
     public Feedback addFeedback(@RequestBody Feedback feedback) {
-        feedbackService.addFeedback(feedback);
-        return feedback;
+        return feedbackService.addFeedback(feedback);
     }
 
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
