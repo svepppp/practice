@@ -7,7 +7,11 @@
     <groupId>businessassistant</groupId>
     <artifactId>businessassistant</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <modules>
+        <module>rest</module>
+        <module>integrationtest</module>
+    </modules>
+    <packaging>pom</packaging>
 
     <properties>
         <spring.version>4.3.19.RELEASE</spring.version>
@@ -17,6 +21,8 @@
         <postgresql.version>42.2.4</postgresql.version>
         <spring.security.version>4.2.8.RELEASE</spring.security.version>
         <jackson.version>2.7.8</jackson.version>
+        <log4j.properties>1.2.17</log4j.properties>
+        <slf4j.properties>1.7.25</slf4j.properties>
     </properties>
 
     <dependencies>
@@ -119,6 +125,18 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
+        </dependency>
+
+        <!-- logs -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.properties}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.properties}</version>
         </dependency>
     </dependencies>
 
