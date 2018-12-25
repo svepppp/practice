@@ -18,16 +18,6 @@ public class OnlineQueue {
      */
     private String title;
 
-    /**
-     * Service with which the queue is connected
-     */
-    private String service;
-
-    /**
-     * Service requests
-     */
-    private String  requests;
-
     public long getId() {
         return id;
     }
@@ -42,21 +32,5 @@ public class OnlineQueue {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getService() {
-        return service;
-    }
-
-    public void setService(String service) {
-        this.service = service;
-    }
-
-    public String getRequests() {
-        return requests;
-    }
-
-    public void setRequests(String requests) {
-        this.requests = requests;
     }
 }
