@@ -100,6 +100,10 @@ public class AppConfig {
 
     @Bean
 
+    public FeedbackDao feedbackDao() {
+        return new FeedbackDaoImpl(Feedback.class);
+    }
+
     public NewsDao newsDao() {
         return new NewsDaoImpl(News.class);
     }
