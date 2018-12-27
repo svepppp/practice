@@ -64,6 +64,11 @@ public class AppConfig {
     }
 
     @Bean
+    public DocumentItemDao documentItemDao() {
+        return new DocumentItemDaoImpl(DocumentItem.class);
+    }
+
+    @Bean
     public OnlineQueueDao onlineQueueDao() {
         return new OnlineQueueDaoImpl(OnlineQueue.class);
     }
@@ -84,13 +89,32 @@ public class AppConfig {
     }
 
     @Bean
+    public PointOfInterestDao pointOfInterestDao() {
+        return new PointOfInterestDaoImpl(PointOfInterest.class);
+    }
+
+    @Bean
     public EmployeeDao employeeDao() {
         return new EmployeeDaoImpl(Employee.class);
     }
 
     @Bean
+
     public FeedbackDao feedbackDao() {
         return new FeedbackDaoImpl(Feedback.class);
     }
 
+    public NewsDao newsDao() {
+        return new NewsDaoImpl(News.class);
+    }
+
+    @Bean
+      public HistoryDao historyDao() {
+        return new HistoryDaoImpl(History.class);
+    }
+
+    @Bean
+    public CourseDao courseDao() {
+        return new CourseDaoImpl(Course.class);
+    }
 }
