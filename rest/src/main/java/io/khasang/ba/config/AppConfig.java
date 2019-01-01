@@ -99,11 +99,11 @@ public class AppConfig {
     }
 
     @Bean
-
     public FeedbackDao feedbackDao() {
         return new FeedbackDaoImpl(Feedback.class);
     }
 
+    @Bean
     public NewsDao newsDao() {
         return new NewsDaoImpl(News.class);
     }
@@ -111,6 +111,11 @@ public class AppConfig {
     @Bean
       public HistoryDao historyDao() {
         return new HistoryDaoImpl(History.class);
+    }
+
+    @Bean
+      public RequestDao requestDao() {
+        return new RequestDaoImpl(Request.class);
     }
 
     @Bean
