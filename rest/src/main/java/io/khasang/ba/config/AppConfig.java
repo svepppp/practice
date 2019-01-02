@@ -109,17 +109,22 @@ public class AppConfig {
     }
 
     @Bean
-      public HistoryDao historyDao() {
+    public HistoryDao historyDao() {
         return new HistoryDaoImpl(History.class);
     }
 
     @Bean
-      public RequestDao requestDao() {
+    public RequestDao requestDao() {
         return new RequestDaoImpl(Request.class);
     }
 
     @Bean
     public CourseDao courseDao() {
         return new CourseDaoImpl(Course.class);
+    }
+
+    @Bean
+    public ClientDao clientDao() {
+        return new ClientDaoImpl(Client.class);
     }
 }
