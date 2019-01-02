@@ -62,7 +62,7 @@ public class FeedbackControllerIntegrationTest {
     }
 
     @Test
-    public void deleteOnlineQueue() {
+    public void deleteFeedback() {
         Feedback feedback = createFeedback();
 
         RestTemplate restTemplate = new RestTemplate();
